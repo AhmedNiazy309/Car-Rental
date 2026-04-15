@@ -1,0 +1,12 @@
+.page-header { margin-bottom: 2rem; }
+.page-header h1 { margin: 0 0 0.5rem; font-size: 2rem; font-weight: 800; }
+.page-header p { margin: 0; color: var(--p-text-secondary-color); font-size: 1.1rem; }
+.order-link { color: var(--p-primary-color); font-family: monospace; font-weight: 600; text-decoration: none; padding: 0.2rem 0.5rem; background: var(--p-surface-100); border-radius: 4px; }
+:host-context(html.app-dark) .order-link { background: var(--p-surface-800); }
+.order-link:hover { text-decoration: underline; background: var(--p-primary-50); }
+:host-context(html.app-dark) .order-link:hover { background: rgba(99,102,241,0.2); }
+.font-bold { font-weight: 700; color: var(--p-text-color); }
+.pagination-wrapper { display: flex; justify-content: center; margin-top: 2rem; }
+.empty-state { text-align: center; padding: 5rem 2rem; color: var(--p-text-secondary-color); background: var(--p-surface-0); border-radius: var(--app-radius); border: 1px dashed var(--p-surface-200); }
+:host-context(html.app-dark) .empty-state { background: var(--p-surface-900); border-color: var(--p-surface-700); }
+.empty-state i { font-size: 4rem; margin-bottom: 1.5rem; opacity: 0.2; }

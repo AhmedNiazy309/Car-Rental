@@ -1,0 +1,62 @@
+<div class="page-header">
+  <button pButton icon="pi pi-arrow-left" [text]="true" severity="secondary"
+          routerLink="/cars" [label]="'common.back' | transloco"></button>
+</div>
+
+@if (loading()) {
+  <div class="detail-skeleton">
+    <p-skeleton height="400px" styleClass="w-full mb-4"></p-skeleton>
+    <p-skeleton height="3rem" width="50%" styleClass="mb-3"></p-skeleton>
+    <p-skeleton height="2rem" width="30%" styleClass="mb-4"></p-skeleton>
+    <div class="features-sk">
+      <p-skeleton width="100px" height="100px"></p-skeleton>
+      <p-skeleton width="100px" height="100px"></p-skeleton>
+      <p-skeleton width="100px" height="100px"></p-skeleton>
+    </div>
+  </div>
+}
+
+@if (!loading() && car()) {
+  <div class="car-detail-container">
+    <div class="car-image-hero">
+      <i class="pi pi-car"></i>
+    </div>
+    
+    <div class="car-info">
+      <div class="header-row">
+        <div>
+          <span class="brand-tag">{{ car()!.brand }}</span>
+          <h1>{{ car()!.name }}</h1>
+        </div>
+        <div class="price-box">
+          <span class="amount">{{ car()!.price_per_day }} SAR</span>
+          <span class="unit">/ {{ 'car.day' | transloco }}</span>
+        </div>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-box">
+          <i class="pi pi-calendar"></i>
+          <span class="label">{{ 'car.yearModel' | transloco }}</span>
+          <span class="value">{{ car()!.model }}</span>
+        </div>
+        <div class="feature-box">
+          <i class="pi pi-gauge"></i>
+          <span class="label">{{ 'car.kilometers' | transloco }}</span>
+          <span class="value">{{ car()!.kilometers | number }} km</span>
+        </div>
+        <div class="feature-box">
+          <i class="pi pi-star"></i>
+          <span class="label">{{ 'car.brand' | transloco }}</span>
+          <span class="value">{{ car()!.brand }}</span>
+        </div>
+      </div>
+      
+      <div class="actions-section">
+        <button pButton [label]="'customer.rentNow' | transloco" icon="pi pi-calendar-plus"
+                [routerLink]="['/orders/new']" [queryParams]="{ car_id: car()!.id }"
+                size="large" class="w-full rent-btn"></button>
+      </div>
+    </div>
+  </div>
+}

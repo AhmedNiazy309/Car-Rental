@@ -1,0 +1,50 @@
+{
+  "name": "angular-base-starter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reusable Angular starter base with PrimeNG, Tailwind, Transloco, NgRx Signals, and feature-based architecture.",
+  "scripts": {
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "lint": "eslint .",
+    "format": "prettier . --write"
+  },
+  "dependencies": {
+    "@angular/animations": "^21.2.7",
+    "@angular/common": "^21.2.7",
+    "@angular/compiler": "^21.2.7",
+    "@angular/core": "^21.2.7",
+    "@angular/forms": "^21.2.7",
+    "@angular/platform-browser": "^21.2.7",
+    "@angular/router": "^21.2.7",
+    "@jsverse/transloco": "^8.3.0",
+    "@lucide/angular": "^1.7.0",
+    "@ngrx/signals": "^21.0.1",
+    "@primeuix/themes": "^1.2.3",
+    "primeicons": "^7.0.0",
+    "primeng": "^21.1.3",
+    "rxjs": "^7.8.2",
+    "tslib": "^2.8.1",
+    "zod": "^4.1.12",
+    "ngx-mask": "^21.0.1",
+    "zone.js": "^0.15.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.12",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.12",
+    "@angular-devkit/build-angular": "^21.2.3",
+    "@angular/cli": "^21.2.3",
+    "@angular/compiler-cli": "^21.2.7",
+    "@angular-eslint/builder": "^21.3.1",
+    "@angular-eslint/eslint-plugin": "^21.3.1",
+    "@angular-eslint/eslint-plugin-template": "^21.3.1",
+    "@angular-eslint/template-parser": "^21.3.1",
+    "angular-eslint": "^21.3.0",
+    "eslint": "^9.36.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3"
+  }
+}

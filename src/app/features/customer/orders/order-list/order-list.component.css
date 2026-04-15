@@ -1,0 +1,11 @@
+.page-header { margin-bottom: 2rem; }
+.page-header h1 { margin: 0 0 0.5rem; font-size: 2rem; font-weight: 800; }
+.page-header p { margin: 0; color: var(--p-text-secondary-color); font-size: 1.1rem; }
+.order-id { font-family: monospace; font-weight: 600; color: var(--p-text-secondary-color); }
+.car-info { display: flex; flex-direction: column; gap: 0.25rem; }
+.pagination-wrapper { display: flex; justify-content: center; margin-top: 2rem; }
+.empty-state { text-align: center; padding: 5rem 2rem; color: var(--p-text-secondary-color); background: var(--p-surface-0); border-radius: var(--app-radius); border: 1px dashed var(--p-surface-200); }
+:host-context(html.app-dark) .empty-state { background: var(--p-surface-900); border-color: var(--p-surface-700); }
+.empty-state i { font-size: 4rem; margin-bottom: 1.5rem; opacity: 0.2; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; color: var(--p-primary-color); }

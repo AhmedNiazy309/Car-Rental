@@ -1,0 +1,76 @@
+<div class="page-header">
+  <h1>{{ 'admin.orders' | transloco }}</h1>
+  <p>{{ 'admin.ordersDesc' | transloco }}</p>
+</div>
+
+<div class="filters-bar">
+  <input pInputText [placeholder]="'common.search' | transloco"
+         [formControl]="searchCtrl" class="filter-input" />
+  <p-select [options]="paymentTypeOptions" [formControl]="paymentTypeCtrl"
+               [placeholder]="'order.paymentType' | transloco"
+               [showClear]="true" styleClass="filter-dropdown"></p-select>
+  <p-select [options]="paymentStatusOptions" [formControl]="paymentStatusCtrl"
+               [placeholder]="'order.paymentStatus' | transloco"
+               [showClear]="true" styleClass="filter-dropdown"></p-select>
+  <p-select [options]="orderTypeOptions" [formControl]="orderTypeCtrl"
+               [placeholder]="'order.orderType' | transloco"
+               [showClear]="true" styleClass="filter-dropdown"></p-select>
+  <button pButton [label]="'common.search' | transloco" icon="pi pi-search"
+          (click)="loadOrders()" severity="primary"></button>
+</div>
+
+@if (loading()) {
+  @for (i of [1,2,3,4,5]; track i) {
+    <p-skeleton height="3rem" styleClass="mb-2"></p-skeleton>
+  }
+}
+
+@if (!loading() && orders().length > 0) {
+  <p-table [value]="orders()" [tableStyle]="{ 'min-width': '70rem' }"
+           styleClass="p-datatable-striped p-datatable-sm">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>{{ 'order.customer' | transloco }}</th>
+        <th>{{ 'order.car' | transloco }}</th>
+        <th>{{ 'order.days' | transloco }}</th>
+        <th>{{ 'order.totalPrice' | transloco }}</th>
+        <th>{{ 'order.paymentType' | transloco }}</th>
+        <th>{{ 'order.paymentStatus' | transloco }}</th>
+        <th>{{ 'order.orderType' | transloco }}</th>
+        <th>{{ 'common.actions' | transloco }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-order>
+      <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.user?.name || order.user_id }}</td>
+        <td>{{ order.car?.name ? (order.car.brand + ' ' + order.car.name) : order.car_id }}</td>
+        <td>{{ order.days }}</td>
+        <td>{{ order.total_price }} {{ 'app.currency' | transloco }}</td>
+        <td><p-tag [value]="order.payment_type" severity="info"></p-tag></td>
+        <td>
+          <p-tag [value]="order.payment_status"
+                 [severity]="order.payment_status === 'success' ? 'success' : order.payment_status === 'pending' ? 'warn' : 'danger'"></p-tag>
+        </td>
+        <td><p-tag [value]="order.order_type" [severity]="order.order_type === 'full' ? 'info' : 'secondary'"></p-tag></td>
+        <td>
+          <button pButton icon="pi pi-eye" [text]="true" severity="info"
+                  [routerLink]="['/admin/orders', order.id]" pTooltip="View"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-paginator [rows]="perPage" [totalRecords]="totalRecords()"
+               [first]="(currentPage() - 1) * perPage"
+               (onPageChange)="onPageChange($event)"></p-paginator>
+}
+
+@if (!loading() && orders().length === 0) {
+  <div class="empty-state">
+    <i class="pi pi-shopping-cart"></i>
+    <h3>{{ 'common.noData' | transloco }}</h3>
+    <p>{{ 'common.noResultsFound' | transloco }}</p>
+  </div>
+}

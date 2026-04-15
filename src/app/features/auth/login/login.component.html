@@ -1,0 +1,48 @@
+<div class="auth-card">
+  <h2 class="auth-title">{{ 'auth.login' | transloco }}</h2>
+  <p class="auth-subtitle">{{ 'auth.loginSubtitle' | transloco }}</p>
+
+  @if (serverError()) {
+    <p-message severity="error" [text]="serverError()!" styleClass="w-full mb-3"></p-message>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+    <div class="form-field">
+      <label for="email">{{ 'auth.email' | transloco }}</label>
+      <input pInputText id="email" formControlName="email" type="email"
+             [placeholder]="'auth.emailPlaceholder' | transloco" class="w-full" />
+      @if (form.get('email')?.touched && form.get('email')?.errors?.['required']) {
+        <small class="p-error">{{ 'validation.required' | transloco }}</small>
+      }
+      @if (form.get('email')?.touched && form.get('email')?.errors?.['email']) {
+        <small class="p-error">{{ 'validation.email' | transloco }}</small>
+      }
+      @if (fieldErrors()['email']) {
+        <small class="p-error">{{ fieldErrors()['email'][0] }}</small>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="password">{{ 'auth.password' | transloco }}</label>
+      <p-password id="password" formControlName="password"
+                  [placeholder]="'auth.passwordPlaceholder' | transloco"
+                  [toggleMask]="true" [feedback]="false"
+                  styleClass="w-full" inputStyleClass="w-full"></p-password>
+      @if (form.get('password')?.touched && form.get('password')?.errors?.['required']) {
+        <small class="p-error">{{ 'validation.required' | transloco }}</small>
+      }
+      @if (fieldErrors()['password']) {
+        <small class="p-error">{{ fieldErrors()['password'][0] }}</small>
+      }
+    </div>
+
+    <button pButton type="submit" [label]="'auth.loginBtn' | transloco"
+            [loading]="loading()" [disabled]="form.invalid || loading()"
+            class="w-full mt-2" severity="primary"></button>
+
+    <p class="auth-footer">
+      {{ 'auth.noAccount' | transloco }}
+      <a routerLink="/register" class="auth-link">{{ 'auth.register' | transloco }}</a>
+    </p>
+  </form>
+</div>

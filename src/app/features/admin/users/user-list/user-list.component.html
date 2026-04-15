@@ -1,0 +1,74 @@
+<div class="page-header">
+  <h1>{{ 'admin.users' | transloco }}</h1>
+  <p>{{ 'admin.usersDesc' | transloco }}</p>
+</div>
+
+<!-- Filters -->
+<div class="filters-bar">
+  <input pInputText [placeholder]="'common.search' | transloco"
+         [formControl]="searchCtrl" class="filter-input" />
+  <p-select [options]="roleOptions" [formControl]="roleCtrl"
+               [placeholder]="'admin.filterByRole' | transloco"
+               [showClear]="true" styleClass="filter-dropdown"></p-select>
+  <input pInputText [placeholder]="'admin.filterByCountry' | transloco"
+         [formControl]="countryCtrl" class="filter-input" />
+  <button pButton [label]="'common.search' | transloco" icon="pi pi-search"
+          (click)="loadUsers()" severity="primary"></button>
+</div>
+
+<!-- Loading -->
+@if (loading()) {
+  <div class="skeleton-table">
+    @for (i of [1,2,3,4,5]; track i) {
+      <p-skeleton height="3rem" styleClass="mb-2"></p-skeleton>
+    }
+  </div>
+}
+
+<!-- Data Table -->
+@if (!loading() && users().length > 0) {
+  <p-table [value]="users()" [tableStyle]="{ 'min-width': '60rem' }"
+           styleClass="p-datatable-striped p-datatable-sm">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>{{ 'common.name' | transloco }}</th>
+        <th>{{ 'auth.email' | transloco }}</th>
+        <th>{{ 'auth.phone' | transloco }}</th>
+        <th>{{ 'auth.country' | transloco }}</th>
+        <th>{{ 'admin.role' | transloco }}</th>
+        <th>{{ 'common.actions' | transloco }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone || '—' }}</td>
+        <td>{{ user.country || '—' }}</td>
+        <td>
+          <p-tag [value]="user.role" [severity]="user.role === 'admin' ? 'danger' : 'info'"></p-tag>
+        </td>
+        <td>
+          <button pButton icon="pi pi-eye" [text]="true" severity="info"
+                  [routerLink]="['/admin/users', user.id]"
+                  pTooltip="View Details"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-paginator [rows]="perPage" [totalRecords]="totalRecords()"
+               [first]="(currentPage() - 1) * perPage"
+               (onPageChange)="onPageChange($event)"></p-paginator>
+}
+
+<!-- Empty State -->
+@if (!loading() && users().length === 0) {
+  <div class="empty-state">
+    <i class="pi pi-users"></i>
+    <h3>{{ 'common.noData' | transloco }}</h3>
+    <p>{{ 'common.noResultsFound' | transloco }}</p>
+  </div>
+}

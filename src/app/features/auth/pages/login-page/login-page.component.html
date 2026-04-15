@@ -1,0 +1,55 @@
+<div class="surface-ground border-bottom-1 surface-border mb-4">
+  <div class="page-container">
+    <p-toolbar styleClass="border-none bg-transparent px-0 py-2">
+      <ng-template pTemplate="start">
+        <a
+          pButton
+          pRipple
+          [routerLink]="['/', locale.lang(), 'dashboard']"
+          [label]="'nav.home' | transloco"
+          severity="secondary"
+          [text]="true"
+        ></a>
+      </ng-template>
+      <ng-template pTemplate="end">
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          [outlined]="true"
+          (click)="locale.navigateToOtherLang()"
+          [label]="locale.lang() === 'en' ? ('locale.switchToArabic' | transloco) : ('locale.switchToEnglish' | transloco)"
+        ></button>
+        <button
+          pButton
+          type="button"
+          [severity]="theme.isDark() ? 'secondary' : 'contrast'"
+          [outlined]="!theme.isDark()"
+          (click)="theme.toggle()"
+          [label]="theme.isDark() ? ('theme.light' | transloco) : ('theme.dark' | transloco)"
+        ></button>
+      </ng-template>
+    </p-toolbar>
+  </div>
+</div>
+
+<div class="page-container">
+  <app-page-header [title]="'loginPage.title' | transloco" [description]="'loginPage.description' | transloco" />
+
+  <div class="grid md:grid-cols-2 gap-4 align-items-stretch">
+    <app-login-form (submitted)="onSubmit($event)" />
+
+    <div class="surface-card border-round-xl shadow-1 p-4 border-1 surface-border">
+      <h3 class="mt-0 text-lg">{{ 'loginPage.storeState' | transloco }}</h3>
+      <p>
+        <strong>{{ 'loginPage.submitting' | transloco }}:</strong> {{ store.isSubmitting() }}
+      </p>
+      <p>
+        <strong>{{ 'loginPage.authenticated' | transloco }}:</strong> {{ store.isAuthenticated() }}
+      </p>
+      <p>
+        <strong>{{ 'loginPage.user' | transloco }}:</strong> {{ userName() }}
+      </p>
+    </div>
+  </div>
+</div>

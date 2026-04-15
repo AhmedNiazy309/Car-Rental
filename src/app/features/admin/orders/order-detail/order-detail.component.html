@@ -1,0 +1,67 @@
+<div class="page-header">
+  <button pButton icon="pi pi-arrow-left" [text]="true" severity="secondary"
+          routerLink="/admin/orders" [label]="'common.back' | transloco"></button>
+  <h1>{{ 'admin.orderDetails' | transloco }} #{{ order()?.id }}</h1>
+</div>
+
+@if (loading()) { <p-skeleton height="20rem"></p-skeleton> }
+
+@if (!loading() && order()) {
+  <div class="detail-grid">
+    <p-card [header]="'order.info' | transloco">
+      <div class="detail-rows">
+        <div class="detail-row"><span class="label">{{ 'order.customer' | transloco }}</span><span>{{ order()!.user?.name || order()!.user_id }}</span></div>
+        <div class="detail-row"><span class="label">{{ 'order.car' | transloco }}</span><span>{{ order()!.car ? (order()!.car!.brand + ' ' + order()!.car!.name + ' ' + order()!.car!.model) : order()!.car_id }}</span></div>
+        <div class="detail-row"><span class="label">{{ 'order.deliveryDate' | transloco }}</span><span>{{ order()!.delivery_date }}</span></div>
+        <div class="detail-row"><span class="label">{{ 'order.receivingDate' | transloco }}</span><span>{{ order()!.receiving_date }}</span></div>
+        <div class="detail-row"><span class="label">{{ 'order.days' | transloco }}</span><span>{{ order()!.days }}</span></div>
+        <div class="detail-row"><span class="label">{{ 'order.totalPrice' | transloco }}</span><span class="price">{{ order()!.total_price }} SAR</span></div>
+        <div class="detail-row"><span class="label">{{ 'order.points' | transloco }}</span><span>{{ order()!.points }}</span></div>
+        <div class="detail-row"><span class="label">{{ 'order.paymentType' | transloco }}</span><p-tag [value]="order()!.payment_type" severity="info"></p-tag></div>
+        <div class="detail-row">
+          <span class="label">{{ 'order.paymentStatus' | transloco }}</span>
+          <p-tag [value]="order()!.payment_status"
+                 [severity]="order()!.payment_status === 'success' ? 'success' : order()!.payment_status === 'pending' ? 'warn' : 'danger'"></p-tag>
+        </div>
+        <div class="detail-row"><span class="label">{{ 'order.orderType' | transloco }}</span><p-tag [value]="order()!.order_type"></p-tag></div>
+      </div>
+    </p-card>
+
+    <!-- Update Payment Status -->
+    <p-card [header]="'admin.updatePaymentStatus' | transloco">
+      <div class="update-form">
+        <p-select [options]="statusOptions" [formControl]="statusCtrl"
+                    [placeholder]="'order.selectStatus' | transloco"
+                    styleClass="w-full"></p-select>
+        <button pButton [label]="'common.save' | transloco"
+                [loading]="updating()" [disabled]="!statusCtrl.value || updating()"
+                (click)="updateStatus()" severity="primary"></button>
+      </div>
+    </p-card>
+
+    @if (order()!.installments && order()!.installments!.length > 0) {
+      <p-card [header]="'nav.installments' | transloco">
+        <p-table [value]="order()!.installments!" styleClass="p-datatable-sm p-datatable-striped">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>ID</th>
+              <th>{{ 'installment.amount' | transloco }}</th>
+              <th>{{ 'installment.dueDate' | transloco }}</th>
+              <th>{{ 'installment.status' | transloco }}</th>
+              <th>{{ 'installment.paidAt' | transloco }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-inst>
+            <tr>
+              <td>{{ inst.id }}</td>
+              <td>{{ inst.amount }} SAR</td>
+              <td>{{ inst.due_date }}</td>
+              <td><p-tag [value]="inst.status" [severity]="inst.status === 'paid' ? 'success' : 'warn'"></p-tag></td>
+              <td>{{ inst.paid_at ? (inst.paid_at | date:'medium') : '—' }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-card>
+    }
+  </div>
+}

@@ -1,0 +1,102 @@
+<div class="page-header">
+  <button pButton icon="pi pi-arrow-left" [text]="true" severity="secondary"
+          routerLink="/orders" [label]="'common.back' | transloco"></button>
+  <h1>{{ 'order.details' | transloco }} #{{ order()?.id }}</h1>
+</div>
+
+@if (loading()) {
+  <p-skeleton height="20rem" styleClass="mb-4"></p-skeleton>
+}
+
+@if (!loading() && order()) {
+  <div class="detail-grid">
+    <div class="main-info">
+      <p-card styleClass="mb-4">
+        <h3 class="card-title">{{ 'order.info' | transloco }}</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">{{ 'order.car' | transloco }}</span>
+            <span class="value">{{ order()!.car?.brand }} {{ order()!.car?.name }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">{{ 'order.deliveryDate' | transloco }}</span>
+            <span class="value">{{ order()!.delivery_date }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">{{ 'order.receivingDate' | transloco }}</span>
+            <span class="value">{{ order()!.receiving_date }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">{{ 'order.days' | transloco }}</span>
+            <span class="value">{{ order()!.days }} {{ 'order.daysUnit' | transloco }}</span>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card styleClass="mb-4 highlights-card">
+        <div class="highlights-grid">
+          <div class="highlight-item">
+            <i class="pi pi-money-bill"></i>
+            <div class="hl-content">
+              <span class="label">{{ 'order.totalPrice' | transloco }}</span>
+              <span class="value">{{ order()!.total_price }} SAR</span>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <i class="pi pi-star"></i>
+            <div class="hl-content">
+              <span class="label">{{ 'order.points' | transloco }}</span>
+              <span class="value">{{ order()!.points }}</span>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <i class="pi pi-credit-card"></i>
+            <div class="hl-content">
+              <span class="label">{{ 'order.paymentType' | transloco }}</span>
+              <p-tag [value]="order()!.payment_type" severity="info"></p-tag>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <i class="pi pi-info-circle"></i>
+            <div class="hl-content">
+              <span class="label">{{ 'order.paymentStatus' | transloco }}</span>
+              <p-tag [value]="order()!.payment_status"
+                     [severity]="order()!.payment_status === 'success' ? 'success' : order()!.payment_status === 'pending' ? 'warn' : 'danger'"></p-tag>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <i class="pi pi-box"></i>
+            <div class="hl-content">
+              <span class="label">{{ 'order.orderType' | transloco }}</span>
+              <p-tag [value]="order()!.order_type"></p-tag>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    @if (order()!.installments && order()!.installments!.length > 0) {
+      <p-card styleClass="installments-card">
+        <h3 class="card-title">{{ 'nav.installments' | transloco }}</h3>
+        <p-table [value]="order()!.installments!" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ 'installment.amount' | transloco }}</th>
+              <th>{{ 'installment.dueDate' | transloco }}</th>
+              <th>{{ 'installment.status' | transloco }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-inst>
+            <tr>
+              <td class="font-bold">{{ inst.amount }} SAR</td>
+              <td>{{ inst.due_date }}</td>
+              <td>
+                <p-tag [value]="inst.status" [severity]="inst.status === 'paid' ? 'success' : 'warn'"></p-tag>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-card>
+    }
+  </div>
+}

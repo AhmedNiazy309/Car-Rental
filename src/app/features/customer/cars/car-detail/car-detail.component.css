@@ -1,0 +1,25 @@
+.page-header { margin-bottom: 2rem; }
+.car-detail-container { background: var(--p-surface-0); border-radius: var(--app-radius); overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+:host-context(html.app-dark) .car-detail-container { background: var(--p-surface-900); }
+.car-image-hero { height: 40vh; min-height: 300px; background: var(--p-surface-100); display: flex; align-items: center; justify-content: center; color: var(--p-surface-400); font-size: 8rem; }
+:host-context(html.app-dark) .car-image-hero { background: var(--p-surface-800); color: var(--p-surface-600); }
+.car-info { padding: 3rem; }
+.header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap; }
+.brand-tag { display: inline-block; padding: 0.4rem 1rem; background: var(--p-surface-100); color: var(--p-text-secondary-color); border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-bottom: 1rem; }
+:host-context(html.app-dark) .brand-tag { background: var(--p-surface-800); }
+.header-row h1 { margin: 0; font-size: 2.5rem; font-weight: 800; line-height: 1.2; color: var(--p-text-color); }
+.price-box { text-align: right; background: var(--p-primary-50); padding: 1.5rem 2rem; border-radius: var(--app-radius); border: 1px solid var(--p-primary-100); min-width: max-content; }
+:host-context(html.app-dark) .price-box { background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.2); }
+.price-box .amount { display: block; font-size: 2rem; font-weight: 800; color: var(--p-primary-color); line-height: 1; }
+.price-box .unit { font-size: 1rem; color: var(--p-text-secondary-color); font-weight: 500; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+.feature-box { display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem; background: var(--p-surface-50); border-radius: var(--app-radius); text-align: center; border: 1px solid var(--p-surface-200); }
+:host-context(html.app-dark) .feature-box { background: var(--p-surface-800); border-color: var(--p-surface-700); }
+.feature-box i { font-size: 2rem; color: var(--p-text-secondary-color); margin-bottom: 1rem; }
+.feature-box .label { font-size: 0.875rem; color: var(--p-text-secondary-color); margin-bottom: 0.5rem; }
+.feature-box .value { font-weight: 700; font-size: 1.1rem; color: var(--p-text-color); }
+.actions-section { padding-top: 2rem; border-top: 1px solid var(--p-surface-200); }
+:host-context(html.app-dark) .actions-section { border-color: var(--p-surface-700); }
+.rent-btn { font-size: 1.1rem; font-weight: 700; padding: 1.25rem; }
+.features-sk { display: flex; gap: 1rem; margin-top: 2rem; }
+@media (max-width: 768px) { .car-info { padding: 1.5rem; } .header-row { flex-direction: column; gap: 1.5rem; } .price-box { width: 100%; text-align: center; } }

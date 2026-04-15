@@ -1,0 +1,62 @@
+<p-toast position="top-right" />
+<p-confirmDialog [style]="{ width: 'min(440px, 92vw)' }" [appendTo]="'body'" />
+
+<div class="admin-layout">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" [class.collapsed]="sidebarCollapsed()">
+    <div class="sidebar-brand">
+      <i class="pi pi-car"></i>
+      <span class="brand-text">{{ 'admin.title' | transloco }}</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a pRipple routerLink="/admin/users" routerLinkActive="active"
+         class="sidebar-link">
+        <i class="pi pi-users"></i>
+        <span>{{ 'nav.users' | transloco }}</span>
+      </a>
+      <a pRipple routerLink="/admin/cars" routerLinkActive="active"
+         class="sidebar-link">
+        <i class="pi pi-car"></i>
+        <span>{{ 'nav.cars' | transloco }}</span>
+      </a>
+      <a pRipple routerLink="/admin/orders" routerLinkActive="active"
+         class="sidebar-link">
+        <i class="pi pi-shopping-cart"></i>
+        <span>{{ 'nav.orders' | transloco }}</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button pButton [text]="true" severity="secondary" (click)="auth.logout()"
+              class="sidebar-link w-full text-left">
+        <i class="pi pi-sign-out"></i>
+        <span>{{ 'nav.logout' | transloco }}</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div class="topbar-left">
+        <button pButton [text]="true" severity="secondary" (click)="toggleSidebar()" class="p-button-rounded">
+          <i class="pi pi-bars"></i>
+        </button>
+      </div>
+      <div class="topbar-right">
+        <span class="user-name">{{ auth.user()?.name }}</span>
+        <button pButton [text]="true" severity="secondary" (click)="locale.navigateToOtherLang()" class="p-button-rounded">
+          <i class="pi pi-language"></i>
+          <span class="hidden-mobile">{{ locale.lang() === 'en' ? 'العربية' : 'English' }}</span>
+        </button>
+        <button pButton [text]="true" severity="secondary" (click)="theme.toggle()" class="p-button-rounded">
+          <i [class]="theme.isDark() ? 'pi pi-sun' : 'pi pi-moon'"></i>
+        </button>
+      </div>
+    </header>
+    <main class="admin-content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

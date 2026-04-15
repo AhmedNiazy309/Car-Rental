@@ -1,0 +1,95 @@
+<div class="auth-card">
+  <h2 class="auth-title">{{ 'auth.register' | transloco }}</h2>
+  <p class="auth-subtitle">{{ 'auth.registerSubtitle' | transloco }}</p>
+
+  @if (serverError()) {
+    <p-message severity="error" [text]="serverError()!" styleClass="w-full mb-3"></p-message>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+    <div class="form-field">
+      <label for="name">{{ 'auth.name' | transloco }}</label>
+      <input pInputText id="name" formControlName="name"
+             [placeholder]="'auth.namePlaceholder' | transloco" class="w-full" />
+      @if (form.get('name')?.touched && form.get('name')?.errors?.['required']) {
+        <small class="p-error">{{ 'validation.required' | transloco }}</small>
+      }
+      @if (fieldErrors()['name']) {
+        <small class="p-error">{{ fieldErrors()['name'][0] }}</small>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="reg-email">{{ 'auth.email' | transloco }}</label>
+      <input pInputText id="reg-email" formControlName="email" type="email"
+             [placeholder]="'auth.emailPlaceholder' | transloco" class="w-full" />
+      @if (form.get('email')?.touched && form.get('email')?.errors?.['required']) {
+        <small class="p-error">{{ 'validation.required' | transloco }}</small>
+      }
+      @if (form.get('email')?.touched && form.get('email')?.errors?.['email']) {
+        <small class="p-error">{{ 'validation.email' | transloco }}</small>
+      }
+      @if (fieldErrors()['email']) {
+        <small class="p-error">{{ fieldErrors()['email'][0] }}</small>
+      }
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="phone">{{ 'auth.phone' | transloco }}</label>
+        <input pInputText id="phone" formControlName="phone"
+               placeholder="+966500000000" class="w-full" />
+        @if (fieldErrors()['phone']) {
+          <small class="p-error">{{ fieldErrors()['phone'][0] }}</small>
+        }
+      </div>
+      <div class="form-field">
+        <label for="country">{{ 'auth.country' | transloco }}</label>
+        <input pInputText id="country" formControlName="country"
+               placeholder="Saudi Arabia" class="w-full" />
+        @if (fieldErrors()['country']) {
+          <small class="p-error">{{ fieldErrors()['country'][0] }}</small>
+        }
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="reg-password">{{ 'auth.password' | transloco }}</label>
+      <p-password id="reg-password" formControlName="password"
+                  [placeholder]="'auth.passwordPlaceholder' | transloco"
+                  [toggleMask]="true" [feedback]="true"
+                  styleClass="w-full" inputStyleClass="w-full"></p-password>
+      @if (form.get('password')?.touched && form.get('password')?.errors?.['required']) {
+        <small class="p-error">{{ 'validation.required' | transloco }}</small>
+      }
+      @if (form.get('password')?.touched && form.get('password')?.errors?.['minlength']) {
+        <small class="p-error">{{ 'validation.minLength' | transloco }}</small>
+      }
+      @if (fieldErrors()['password']) {
+        @for (err of fieldErrors()['password']; track err) {
+          <small class="p-error">{{ err }}</small>
+        }
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="password_confirmation">{{ 'auth.confirmPassword' | transloco }}</label>
+      <p-password id="password_confirmation" formControlName="password_confirmation"
+                  [placeholder]="'auth.confirmPasswordPlaceholder' | transloco"
+                  [toggleMask]="true" [feedback]="false"
+                  styleClass="w-full" inputStyleClass="w-full"></p-password>
+      @if (form.get('password_confirmation')?.touched && form.get('password_confirmation')?.errors?.['required']) {
+        <small class="p-error">{{ 'validation.required' | transloco }}</small>
+      }
+    </div>
+
+    <button pButton type="submit" [label]="'auth.registerBtn' | transloco"
+            [loading]="loading()" [disabled]="form.invalid || loading()"
+            class="w-full mt-2" severity="primary"></button>
+
+    <p class="auth-footer">
+      {{ 'auth.haveAccount' | transloco }}
+      <a routerLink="/login" class="auth-link">{{ 'auth.login' | transloco }}</a>
+    </p>
+  </form>
+</div>

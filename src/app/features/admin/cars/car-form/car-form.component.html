@@ -1,0 +1,79 @@
+<div class="page-header">
+  <button pButton icon="pi pi-arrow-left" [text]="true" severity="secondary"
+          routerLink="/admin/cars" [label]="'common.back' | transloco"></button>
+  <h1>{{ isEdit() ? ('admin.editCar' | transloco) : ('admin.addCar' | transloco) }}</h1>
+</div>
+
+@if (serverError()) {
+  <p-message severity="error" [text]="serverError()!" styleClass="w-full mb-3"></p-message>
+}
+
+<p-card>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="car-form">
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="name">{{ 'common.name' | transloco }} *</label>
+        <input pInputText id="name" formControlName="name" class="w-full" />
+        @if (form.get('name')?.touched && form.get('name')?.errors?.['required']) {
+          <small class="p-error">{{ 'validation.required' | transloco }}</small>
+        }
+        @if (fieldErrors()['name']) {
+          <small class="p-error">{{ fieldErrors()['name'][0] }}</small>
+        }
+      </div>
+      <div class="form-field">
+        <label for="brand">{{ 'car.brand' | transloco }} *</label>
+        <input pInputText id="brand" formControlName="brand" class="w-full" />
+        @if (form.get('brand')?.touched && form.get('brand')?.errors?.['required']) {
+          <small class="p-error">{{ 'validation.required' | transloco }}</small>
+        }
+        @if (fieldErrors()['brand']) {
+          <small class="p-error">{{ fieldErrors()['brand'][0] }}</small>
+        }
+      </div>
+      <div class="form-field">
+        <label for="model">{{ 'car.model' | transloco }} *</label>
+        <input pInputText id="model" formControlName="model" class="w-full" />
+        @if (form.get('model')?.touched && form.get('model')?.errors?.['required']) {
+          <small class="p-error">{{ 'validation.required' | transloco }}</small>
+        }
+        @if (fieldErrors()['model']) {
+          <small class="p-error">{{ fieldErrors()['model'][0] }}</small>
+        }
+      </div>
+      <div class="form-field">
+        <label for="kilometers">{{ 'car.kilometers' | transloco }} *</label>
+        <p-inputNumber id="kilometers" formControlName="kilometers"
+                       [useGrouping]="true" suffix=" km"
+                       styleClass="w-full" inputStyleClass="w-full"></p-inputNumber>
+        @if (form.get('kilometers')?.touched && form.get('kilometers')?.errors?.['required']) {
+          <small class="p-error">{{ 'validation.required' | transloco }}</small>
+        }
+        @if (fieldErrors()['kilometers']) {
+          <small class="p-error">{{ fieldErrors()['kilometers'][0] }}</small>
+        }
+      </div>
+      <div class="form-field">
+        <label for="price_per_day">{{ 'car.pricePerDay' | transloco }} *</label>
+        <p-inputNumber id="price_per_day" formControlName="price_per_day"
+                       mode="currency" currency="SAR" locale="en-US"
+                       styleClass="w-full" inputStyleClass="w-full"></p-inputNumber>
+        @if (form.get('price_per_day')?.touched && form.get('price_per_day')?.errors?.['required']) {
+          <small class="p-error">{{ 'validation.required' | transloco }}</small>
+        }
+        @if (fieldErrors()['price_per_day']) {
+          <small class="p-error">{{ fieldErrors()['price_per_day'][0] }}</small>
+        }
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button pButton type="button" [label]="'common.cancel' | transloco"
+              severity="secondary" routerLink="/admin/cars"></button>
+      <button pButton type="submit"
+              [label]="isEdit() ? ('common.save' | transloco) : ('admin.addCar' | transloco)"
+              [loading]="loading()" [disabled]="form.invalid || loading()"
+              severity="primary"></button>
+    </div>
+  </form>
+</p-card>

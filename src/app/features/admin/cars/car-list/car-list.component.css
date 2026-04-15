@@ -1,0 +1,13 @@
+.page-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
+}
+.page-header h1 { margin: 0 0 0.25rem; font-size: 1.5rem; font-weight: 700; }
+.page-header p { margin: 0; color: var(--p-text-secondary-color); font-size: 0.9rem; }
+.filters-bar { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; align-items: center; }
+.filter-input { min-width: 180px; }
+.filter-sm { min-width: 120px; max-width: 150px; }
+.action-buttons { display: flex; gap: 0.25rem; }
+.empty-state { text-align: center; padding: 4rem 2rem; color: var(--p-text-secondary-color); }
+.empty-state i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+.empty-state h3 { margin: 0 0 0.5rem; }

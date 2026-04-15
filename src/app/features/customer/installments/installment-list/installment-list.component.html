@@ -1,0 +1,63 @@
+<div class="page-header">
+  <h1>{{ 'customer.myInstallments' | transloco }}</h1>
+  <p>{{ 'customer.myInstallmentsDesc' | transloco }}</p>
+</div>
+
+@if (loading()) {
+  <div class="skeleton-table">
+    @for (i of [1,2,3,4]; track i) {
+      <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+    }
+  </div>
+}
+
+@if (!loading() && installments().length > 0) {
+  <p-table [value]="installments()" [tableStyle]="{ 'min-width': '50rem' }"
+           styleClass="p-datatable-striped">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>{{ 'order.orderId' | transloco }}</th>
+        <th>{{ 'installment.amount' | transloco }}</th>
+        <th>{{ 'installment.dueDate' | transloco }}</th>
+        <th>{{ 'installment.paidAt' | transloco }}</th>
+        <th>{{ 'installment.status' | transloco }}</th>
+        <th>{{ 'common.actions' | transloco }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-inst>
+      <tr>
+        <td>{{ inst.id }}</td>
+        <td>
+          <a [routerLink]="['/orders', inst.order_id]" class="order-link">#{{ inst.order_id }}</a>
+        </td>
+        <td><span class="font-bold">{{ inst.amount }} SAR</span></td>
+        <td>{{ inst.due_date }}</td>
+        <td>{{ inst.paid_at ? (inst.paid_at | date:'medium') : '—' }}</td>
+        <td>
+          <p-tag [value]="inst.status" [severity]="inst.status === 'paid' ? 'success' : 'warn'"></p-tag>
+        </td>
+        <td>
+          @if (inst.status === 'unpaid') {
+            <button pButton [label]="'installment.pay' | transloco" icon="pi pi-credit-card"
+                    size="small" [loading]="payingId() === inst.id"
+                    (click)="payInstallment(inst.id)" severity="success"></button>
+          }
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <div class="pagination-wrapper">
+    <p-paginator [rows]="perPage" [totalRecords]="totalRecords()"
+                 [first]="(currentPage() - 1) * perPage"
+                 (onPageChange)="onPageChange($event)"></p-paginator>
+  </div>
+}
+
+@if (!loading() && installments().length === 0) {
+  <div class="empty-state">
+    <i class="pi pi-wallet"></i>
+    <h3>{{ 'customer.noInstallments' | transloco }}</h3>
+  </div>
+}

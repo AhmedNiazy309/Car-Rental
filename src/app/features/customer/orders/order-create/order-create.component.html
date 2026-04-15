@@ -1,0 +1,109 @@
+<div class="page-header">
+  <h1>{{ 'customer.createOrder' | transloco }}</h1>
+</div>
+
+@if (serverError()) {
+  <p-message severity="error" [text]="serverError()!" styleClass="w-full mb-3"></p-message>
+}
+
+<div class="order-layout">
+  <!-- Form Side -->
+  <div class="form-side">
+    <p-card>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="order-form">
+        <div class="form-grid">
+          <div class="form-field w-full md:col-span-2">
+            <label for="car_id">{{ 'order.carId' | transloco }} *</label>
+            <p-inputNumber id="car_id" formControlName="car_id"
+                           [useGrouping]="false" styleClass="w-full" inputStyleClass="w-full"
+                           [placeholder]="'order.enterCarId' | transloco"
+                           (onBlur)="onCarIdChange()"></p-inputNumber>
+            <small class="text-secondary mt-1">
+              @if (selectedCar()) {
+                <i class="pi pi-check text-green-500"></i> Found: {{ selectedCar()!.brand }} {{ selectedCar()!.name }} ({{ selectedCar()!.price_per_day }} SAR/day)
+              }
+            </small>
+            @if (fieldErrors()['car_id']) { <small class="p-error">{{ fieldErrors()['car_id'][0] }}</small> }
+          </div>
+
+          <div class="form-field">
+            <label for="receiving_date">{{ 'order.receivingDate' | transloco }} *</label>
+            <p-datepicker id="receiving_date" formControlName="receiving_date"
+                        [minDate]="minDate" styleClass="w-full" inputStyleClass="w-full"
+                        dateFormat="yy-mm-dd"></p-datepicker>
+            @if (fieldErrors()['receiving_date']) { <small class="p-error">{{ fieldErrors()['receiving_date'][0] }}</small> }
+          </div>
+
+          <div class="form-field">
+            <label for="delivery_date">{{ 'order.deliveryDate' | transloco }} *</label>
+            <p-datepicker id="delivery_date" formControlName="delivery_date"
+                        [minDate]="form.get('receiving_date')?.value || minDate"
+                        styleClass="w-full" inputStyleClass="w-full" dateFormat="yy-mm-dd"></p-datepicker>
+            @if (fieldErrors()['delivery_date']) { <small class="p-error">{{ fieldErrors()['delivery_date'][0] }}</small> }
+          </div>
+
+          <div class="form-field">
+            <label for="payment_type">{{ 'order.paymentType' | transloco }} *</label>
+            <p-select id="payment_type" formControlName="payment_type"
+                        [options]="paymentTypeOptions" styleClass="w-full"></p-select>
+          </div>
+
+          <div class="form-field">
+            <label for="order_type">{{ 'order.orderType' | transloco }} *</label>
+            <p-select id="order_type" formControlName="order_type"
+                        [options]="orderTypeOptions" styleClass="w-full"></p-select>
+          </div>
+        </div>
+
+        <!-- Installment specific fields -->
+        @if (form.get('order_type')?.value === 'installments') {
+          <div class="installment-box">
+            <h4 class="mb-3 mt-0">{{ 'order.installmentDetails' | transloco }}</h4>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="down_payment">{{ 'order.downPayment' | transloco }} *</label>
+                <p-inputNumber id="down_payment" formControlName="down_payment"
+                               mode="currency" currency="SAR" styleClass="w-full" inputStyleClass="w-full"></p-inputNumber>
+                @if (fieldErrors()['down_payment']) { <small class="p-error">{{ fieldErrors()['down_payment'][0] }}</small> }
+              </div>
+              <div class="form-field">
+                <label for="number_of_installments">{{ 'order.numberOfInstallments' | transloco }} *</label>
+                <p-inputNumber id="number_of_installments" formControlName="number_of_installments"
+                               [min]="1" [max]="12" styleClass="w-full" inputStyleClass="w-full"></p-inputNumber>
+                @if (fieldErrors()['number_of_installments']) { <small class="p-error">{{ fieldErrors()['number_of_installments'][0] }}</small> }
+              </div>
+            </div>
+          </div>
+        }
+
+        <div class="form-actions mt-4">
+          <button pButton type="submit" [label]="'customer.placeOrder' | transloco"
+                  [loading]="loading()" [disabled]="form.invalid || loading()"
+                  severity="primary" class="w-full"></button>
+        </div>
+      </form>
+    </p-card>
+  </div>
+
+  <!-- Summary Side -->
+  <div class="summary-side">
+    <p-card [header]="'order.details' | transloco">
+      <div class="summary-details">
+        <div class="summary-row">
+          <span class="label">{{ 'order.estimatedDays' | transloco }}</span>
+          <span class="value">{{ calculateEstimatedDays() }} {{ 'order.daysUnit' | transloco }}</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">{{ 'car.pricePerDay' | transloco }}</span>
+          <span class="value">{{ selectedCar()?.price_per_day || 0 }} SAR</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-row total">
+          <span class="label">{{ 'order.estimatedTotal' | transloco }}</span>
+          <span class="value">{{ calculateEstimatedTotal() }} SAR</span>
+        </div>
+        <p class="summary-note">{{ 'order.previewNote' | transloco }}</p>
+      </div>
+    </p-card>
+  </div>
+</div>

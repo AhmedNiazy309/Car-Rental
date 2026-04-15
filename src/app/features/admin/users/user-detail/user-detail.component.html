@@ -1,0 +1,75 @@
+<div class="page-header">
+  <button pButton icon="pi pi-arrow-left" [text]="true" severity="secondary"
+          routerLink="/admin/users" [label]="'common.back' | transloco"></button>
+  <h1>{{ 'admin.userDetails' | transloco }}</h1>
+</div>
+
+@if (loading()) {
+  <p-skeleton height="20rem"></p-skeleton>
+}
+
+@if (!loading() && user()) {
+  <div class="detail-grid">
+    <p-card>
+      <div class="detail-rows">
+        <div class="detail-row">
+          <span class="detail-label">ID</span>
+          <span class="detail-value">{{ user()!.id }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'common.name' | transloco }}</span>
+          <span class="detail-value">{{ user()!.name }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'auth.email' | transloco }}</span>
+          <span class="detail-value">{{ user()!.email }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'auth.phone' | transloco }}</span>
+          <span class="detail-value">{{ user()!.phone || '—' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'auth.country' | transloco }}</span>
+          <span class="detail-value">{{ user()!.country || '—' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'admin.wallet' | transloco }}</span>
+          <span class="detail-value">{{ user()!.wallet || '0.00' }} SAR</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'admin.role' | transloco }}</span>
+          <p-tag [value]="user()!.role" [severity]="user()!.role === 'admin' ? 'danger' : 'info'"></p-tag>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'common.createdAt' | transloco }}</span>
+          <span class="detail-value">{{ user()!.created_at | date:'medium' }}</span>
+        </div>
+      </div>
+    </p-card>
+
+    @if (user()!.orders && user()!.orders!.length > 0) {
+      <h3>{{ 'nav.orders' | transloco }} ({{ user()!.orders!.length }})</h3>
+      <p-table [value]="user()!.orders!" styleClass="p-datatable-sm p-datatable-striped">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>{{ 'order.car' | transloco }}</th>
+            <th>{{ 'order.days' | transloco }}</th>
+            <th>{{ 'order.totalPrice' | transloco }}</th>
+            <th>{{ 'order.paymentStatus' | transloco }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-order>
+          <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.car_id }}</td>
+            <td>{{ order.days }}</td>
+            <td>{{ order.total_price }} SAR</td>
+            <td><p-tag [value]="order.payment_status"
+                       [severity]="order.payment_status === 'success' ? 'success' : order.payment_status === 'pending' ? 'warn' : 'danger'"></p-tag></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
+  </div>
+}

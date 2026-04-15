@@ -1,0 +1,63 @@
+<div class="page-header">
+  <h1>{{ 'customer.myOrders' | transloco }}</h1>
+  <p>{{ 'customer.myOrdersDesc' | transloco }}</p>
+</div>
+
+@if (loading()) {
+  <div class="skeleton-table">
+    @for (i of [1,2,3,4]; track i) {
+      <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+    }
+  </div>
+}
+
+@if (!loading() && orders().length > 0) {
+  <p-table [value]="orders()" [tableStyle]="{ 'min-width': '60rem' }"
+           styleClass="p-datatable-striped">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{ 'order.orderId' | transloco }}</th>
+        <th>{{ 'order.car' | transloco }}</th>
+        <th>{{ 'order.days' | transloco }}</th>
+        <th>{{ 'order.totalPrice' | transloco }}</th>
+        <th>{{ 'order.paymentStatus' | transloco }}</th>
+        <th>{{ 'common.actions' | transloco }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-order>
+      <tr>
+        <td><span class="order-id">#{{ order.id }}</span></td>
+        <td>
+          <div class="car-info">
+            <span class="font-semibold">{{ order.car?.brand }} {{ order.car?.name }}</span>
+          </div>
+        </td>
+        <td>{{ order.days }}</td>
+        <td><span class="font-bold">{{ order.total_price }} SAR</span></td>
+        <td>
+          <p-tag [value]="order.payment_status"
+                 [severity]="order.payment_status === 'success' ? 'success' : order.payment_status === 'pending' ? 'warn' : 'danger'"></p-tag>
+        </td>
+        <td>
+          <button pButton icon="pi pi-eye" [label]="'customer.viewDetails' | transloco"
+                  [text]="true" severity="info" [routerLink]="['/orders', order.id]"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <div class="pagination-wrapper">
+    <p-paginator [rows]="perPage" [totalRecords]="totalRecords()"
+                 [first]="(currentPage() - 1) * perPage"
+                 (onPageChange)="onPageChange($event)"></p-paginator>
+  </div>
+}
+
+@if (!loading() && orders().length === 0) {
+  <div class="empty-state">
+    <i class="pi pi-shopping-cart"></i>
+    <h3>{{ 'customer.noOrders' | transloco }}</h3>
+    <button pButton [label]="'customer.browseCars' | transloco"
+            routerLink="/cars" severity="primary" class="mt-4"></button>
+  </div>
+}
